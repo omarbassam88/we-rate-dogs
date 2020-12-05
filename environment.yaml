@@ -1,0 +1,54 @@
+name: we-rate-dogs
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - blas=1.0=mkl
+  - blinker=1.4=py_1
+  - brotlipy=0.7.0=py38h27cfd23_1003
+  - ca-certificates=2020.10.14=0
+  - certifi=2020.11.8=py38h06a4308_0
+  - cffi=1.14.4=py38h261ae71_0
+  - chardet=3.0.4=py38h06a4308_1003
+  - cryptography=3.2.1=py38h3c74f83_1
+  - idna=2.10=pyh9f0ad1d_0
+  - intel-openmp=2020.2=254
+  - ld_impl_linux-64=2.35.1=hed1e6ac_0
+  - libffi=3.3=h58526e2_1
+  - libgcc-ng=9.3.0=h5dbcf3e_17
+  - libgomp=9.3.0=h5dbcf3e_17
+  - libstdcxx-ng=9.3.0=h2ae2ef3_17
+  - mkl=2020.2=256
+  - mkl-service=2.3.0=py38he904b0f_0
+  - mkl_fft=1.2.0=py38h23d657b_0
+  - mkl_random=1.1.1=py38h0573a6f_0
+  - ncurses=6.2=h58526e2_4
+  - numpy=1.19.2=py38h54aff64_0
+  - numpy-base=1.19.2=py38hfa32c7d_0
+  - oauthlib=3.0.1=py_0
+  - openssl=1.1.1h=h7b6447c_0
+  - pandas=1.1.3=py38he6710b0_0
+  - pip=20.3.1=pyhd8ed1ab_0
+  - pycparser=2.20=pyh9f0ad1d_2
+  - pyjwt=1.7.1=py_0
+  - pyopenssl=20.0.0=pyhd8ed1ab_0
+  - pysocks=1.7.1=py38h06a4308_0
+  - python=3.8.5=h7579374_1
+  - python-dateutil=2.8.1=py_0
+  - pytz=2020.4=pyhd3eb1b0_0
+  - readline=8.0=he28a2e2_2
+  - requests=2.25.0=pyhd3deb0d_0
+  - requests-oauthlib=1.3.0=pyh9f0ad1d_0
+  - setuptools=50.3.2=py38h06a4308_2
+  - six=1.15.0=pyh9f0ad1d_0
+  - sqlite=3.34.0=h74cdb3f_0
+  - tk=8.6.10=hed695b0_1
+  - tweepy=3.9.0=pyh9f0ad1d_0
+  - tzdata=2020d=h516909a_0
+  - urllib3=1.25.11=py_0
+  - wheel=0.36.0=pyhd3deb0d_0
+  - xz=5.2.5=h516909a_1
+  - zlib=1.2.11=h516909a_1010
+prefix: /home/bassam/anaconda3/envs/we-rate-dogs
