@@ -37,3 +37,6 @@ conda env create -f environment.yaml
 - [Anaconda](https://www.anaconda.com/)
 
 ## References
+
+* [Check if file exists in Python](https://www.guru99.com/python-check-if-file-exists.html)
+* [Pandas wide_to_long](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.wide_to_long.html)
