@@ -1,4 +1,4 @@
-# **WeRateDogs Data Wrangling**
+<center><h1><strong>WeRateDogs Data Wrangling</strong></h1></center>
 
 This project started as an assessment for for the **Udacity Data Analysis Professional Track**.
 
