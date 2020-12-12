@@ -16,10 +16,13 @@ The dataset is the tweet archive of Twitter user [@dog_rates](https://twitter.co
 ## Requirements
 
 - [NumPy](https://numpy.org/) (1.18 or above recommended)
-- [Panadas](https://pandas.pydata.org/) (1.4 or above recommended)
+- [pandas](https://pandas.pydata.org/)
+- [matplotlib](https://matplotlib.org/)
+- [seaborn](https://seaborn.pydata.org/)
 - [Requests](https://requests.readthedocs.io/en/master/)
 - [Tweepy](https://www.tweepy.org/)
 - [json](https://docs.python.org/3/library/json.html)
+- [re](https://docs.python.org/3/library/re.html)
 
 if you don't have the requirements you can install them using [pip](https://pypi.org/project/pip/):
 

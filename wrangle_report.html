@@ -13075,28 +13075,6 @@ div#notebook {
     });
     </script>
     <!-- End of mathjax configuration --></head>
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/main.css">
-
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<script src="https://rawgit.com/ipython-contrib/jupyter_contrib_nbextensions/master/src/jupyter_contrib_nbextensions/nbextensions/toc2/toc2.js"></script>
-
-<script>
-$( document ).ready(function(){
-
-            var cfg = {"base_numbering": 1, "nav_menu": {}, "number_sections": false, "sideBar": true, "skip_h1_title": false, "title_cell": "Table of Contents", "title_sidebar": "Contents", "toc_cell": false, "toc_position": {"height": "calc(100% - 180px)", "left": "10px", "top": "150px", "width": "349.091px"}, "toc_section_display": true, "toc_window_display": true};
-
-            // fire the main function with these parameters
-            require(['nbextensions/toc2/toc2'], function (toc2) {
-                toc2.table_of_contents(cfg);
-            });
-    });
-</script>
 <body>
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
@@ -13105,6 +13083,14 @@ $( document ).ready(function(){
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <center><h1><strong>WeRateDogs Data Wrangling</strong></h1></center>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h1>Table of Contents<span class="tocSkip"></span></h1></p>
+<div class="toc"><ul class="toc-item"><li><span><a href="#WeRateDogs-Data-Wrangling" data-toc-modified-id="WeRateDogs-Data-Wrangling-1"><strong>WeRateDogs Data Wrangling</strong></a></span></li><li><span><a href="#Introduction" data-toc-modified-id="Introduction-2">Introduction</a></span></li><li><span><a href="#1.-Gathering" data-toc-modified-id="1.-Gathering-3">1. Gathering</a></span><ul class="toc-item"><li><span><a href="#1.1-The-WeRateDogs-Twitter-Archive" data-toc-modified-id="1.1-The-WeRateDogs-Twitter-Archive-3.1">1.1 The WeRateDogs Twitter Archive</a></span></li><li><span><a href="#1.2-The-Tweet-image-predictions" data-toc-modified-id="1.2-The-Tweet-image-predictions-3.2">1.2 The Tweet image predictions</a></span></li><li><span><a href="#1.3-Twitter-API" data-toc-modified-id="1.3-Twitter-API-3.3">1.3 Twitter API</a></span></li><li><span><a href="#1.4-Gathering-Output" data-toc-modified-id="1.4-Gathering-Output-3.4">1.4 Gathering Output</a></span></li></ul></li><li><span><a href="#2.-Assessing-the-Data" data-toc-modified-id="2.-Assessing-the-Data-4">2. Assessing the Data</a></span><ul class="toc-item"><li><span><a href="#2.1-Twitter-Archive" data-toc-modified-id="2.1-Twitter-Archive-4.1">2.1 Twitter Archive</a></span></li><li><span><a href="#2.2-Tweet-Image-Predictions" data-toc-modified-id="2.2-Tweet-Image-Predictions-4.2">2.2 Tweet Image Predictions</a></span></li><li><span><a href="#2.3-Twitter-API" data-toc-modified-id="2.3-Twitter-API-4.3">2.3 Twitter API</a></span></li><li><span><a href="#2.4-Assessing-Output" data-toc-modified-id="2.4-Assessing-Output-4.4">2.4 Assessing Output</a></span></li></ul></li><li><span><a href="#3.-Cleaning" data-toc-modified-id="3.-Cleaning-5">3. Cleaning</a></span><ul class="toc-item"><li><span><a href="#3.1-Twitter-Archive" data-toc-modified-id="3.1-Twitter-Archive-5.1">3.1 Twitter Archive</a></span></li><li><span><a href="#3.2-Tweet-Image-Predictions" data-toc-modified-id="3.2-Tweet-Image-Predictions-5.2">3.2 Tweet Image Predictions</a></span></li><li><span><a href="#3.3-Twitter-API" data-toc-modified-id="3.3-Twitter-API-5.3">3.3 Twitter API</a></span></li><li><span><a href="#3.4-Merging-Data" data-toc-modified-id="3.4-Merging-Data-5.4">3.4 Merging Data</a></span></li><li><span><a href="#3.5-Storing-Data" data-toc-modified-id="3.5-Storing-Data-5.5">3.5 Storing Data</a></span></li></ul></li></ul></div>
 </div>
 </div>
 </div>
@@ -13128,13 +13114,14 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The data wrangling process was achieved using python and the following packages (Libraries):</p>
+<p>The data wrangling process was achieved using python and the following python packages and libraries:</p>
 <ul>
 <li><a href="https://numpy.org/">NumPy</a></li>
 <li><a href="https://pandas.pydata.org/">Panadas</a></li>
 <li><a href="https://requests.readthedocs.io/en/master/">Requests</a></li>
 <li><a href="https://www.tweepy.org/">Tweepy</a></li>
 <li><a href="https://docs.python.org/3/library/json.html">json</a></li>
+<li><a href="https://docs.python.org/3/library/re.html">re</a></li>
 </ul>
 
 </div>
@@ -13375,48 +13362,48 @@ $( document ).ready(function(){
   </thead>
   <tbody>
     <tr>
-      <th>1907</th>
-      <td>852553447878664193</td>
-      <td>https://pbs.twimg.com/media/C9Tg1bPW0AkAMDI.jpg</td>
+      <th>343</th>
+      <td>672264251789176834</td>
+      <td>https://pbs.twimg.com/media/CVRcxJ-WsAAXOhO.jpg</td>
       <td>1</td>
-      <td>bloodhound</td>
-      <td>0.186498</td>
+      <td>Chihuahua</td>
+      <td>0.609860</td>
       <td>True</td>
-      <td>Brabancon_griffon</td>
-      <td>0.139028</td>
-      <td>True</td>
-      <td>Rottweiler</td>
-      <td>0.125940</td>
+      <td>teddy</td>
+      <td>0.068134</td>
+      <td>False</td>
+      <td>Norwich_terrier</td>
+      <td>0.059227</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>1933</th>
-      <td>859607811541651456</td>
-      <td>https://pbs.twimg.com/media/C-3wvtxXcAUTuBE.jpg</td>
+      <th>1055</th>
+      <td>714258258790387713</td>
+      <td>https://pbs.twimg.com/media/CemOGNjWQAEoN7R.jpg</td>
       <td>1</td>
-      <td>golden_retriever</td>
-      <td>0.895529</td>
+      <td>collie</td>
+      <td>0.176758</td>
       <td>True</td>
-      <td>Irish_setter</td>
-      <td>0.024099</td>
+      <td>Chesapeake_Bay_retriever</td>
+      <td>0.101834</td>
       <td>True</td>
-      <td>Labrador_retriever</td>
-      <td>0.019285</td>
+      <td>beagle</td>
+      <td>0.101294</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>1544</th>
-      <td>791672322847637504</td>
-      <td>https://pbs.twimg.com/media/CvyVxQRWEAAdSZS.jpg</td>
+      <th>616</th>
+      <td>680191257256136705</td>
+      <td>https://pbs.twimg.com/media/CXCGVXyWsAAAVHE.jpg</td>
       <td>1</td>
-      <td>golden_retriever</td>
-      <td>0.705092</td>
+      <td>Brittany_spaniel</td>
+      <td>0.733253</td>
       <td>True</td>
-      <td>Labrador_retriever</td>
-      <td>0.219721</td>
+      <td>Welsh_springer_spaniel</td>
+      <td>0.251634</td>
       <td>True</td>
-      <td>kuvasz</td>
-      <td>0.015965</td>
+      <td>English_springer</td>
+      <td>0.009243</td>
       <td>True</td>
     </tr>
   </tbody>
@@ -13507,34 +13494,34 @@ $( document ).ready(function(){
   </thead>
   <tbody>
     <tr>
-      <th>1186</th>
-      <td>672248013293752320</td>
-      <td>559</td>
-      <td>1626</td>
+      <th>209</th>
+      <td>850333567704068097</td>
+      <td>311</td>
+      <td>3333</td>
     </tr>
     <tr>
-      <th>117</th>
-      <td>869227993411051520</td>
-      <td>3397</td>
-      <td>18958</td>
+      <th>854</th>
+      <td>761004547850530816</td>
+      <td>3407</td>
+      <td>11152</td>
     </tr>
     <tr>
-      <th>420</th>
-      <td>820314633777061888</td>
-      <td>554</td>
-      <td>3312</td>
+      <th>848</th>
+      <td>761672994376806400</td>
+      <td>28468</td>
+      <td>48641</td>
     </tr>
     <tr>
-      <th>249</th>
-      <td>842846295480000512</td>
-      <td>3498</td>
-      <td>14887</td>
+      <th>562</th>
+      <td>800459316964663297</td>
+      <td>2167</td>
+      <td>9477</td>
     </tr>
     <tr>
-      <th>1223</th>
-      <td>671518598289059840</td>
-      <td>272</td>
-      <td>887</td>
+      <th>1252</th>
+      <td>670838202509447168</td>
+      <td>643</td>
+      <td>1043</td>
     </tr>
   </tbody>
 </table>
@@ -13598,7 +13585,7 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>using the <code>info</code> method we try to find missing data and look to see if we have non-original tweets (retweets and replies). Also check the is we already have the correct data types for all columns.</p>
+<p>Using the <code>info</code> method we try to find missing data and look to see if we have non-original tweets (retweets and replies). Also check the is we already have the correct data types for all columns.</p>
 
 </div>
 </div>
@@ -13697,38 +13684,18 @@ memory usage: 313.0+ KB
   </thead>
   <tbody>
     <tr>
-      <th>270</th>
-      <td>841314665196081154</td>
+      <th>1979</th>
+      <td>672980819271634944</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2017-03-13 15:47:01 +0000</td>
-      <td>&lt;a href="http://twitter.com" rel="nofollow"&gt;Tw...</td>
-      <td>This is Max. There's no way in h*ck you're tak...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/841314665...</td>
-      <td>13</td>
-      <td>10</td>
-      <td>Max</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1266</th>
-      <td>709852847387627521</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-03-15 21:24:41 +0000</td>
+      <td>2015-12-05 03:28:25 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>*lets out a tiny whimper and then collapses* ....</td>
+      <td>Extraordinary dog here. Looks large. Just a he...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/709852847...</td>
-      <td>12</td>
+      <td>https://twitter.com/dog_rates/status/672980819...</td>
+      <td>5</td>
       <td>10</td>
       <td>None</td>
       <td>None</td>
@@ -13737,60 +13704,80 @@ memory usage: 313.0+ KB
       <td>None</td>
     </tr>
     <tr>
-      <th>2209</th>
-      <td>668623201287675904</td>
+      <th>559</th>
+      <td>803276597545603072</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2015-11-23 02:52:48 +0000</td>
+      <td>2016-11-28 16:37:19 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>This is Jomathan. He is not thrilled about the...</td>
+      <td>This is Winston. His selfie game is legendary....</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/668623201...</td>
+      <td>https://twitter.com/dog_rates/status/803276597...</td>
+      <td>11</td>
       <td>10</td>
-      <td>10</td>
-      <td>Jomathan</td>
+      <td>Winston</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
     </tr>
     <tr>
-      <th>2218</th>
-      <td>668507509523615744</td>
+      <th>1187</th>
+      <td>718460005985447936</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2015-11-22 19:13:05 +0000</td>
+      <td>2016-04-08 15:26:28 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>This is a Birmingham Quagmire named Chuk. Love...</td>
+      <td>Meet Bowie. He's listening for underground squ...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/668507509...</td>
+      <td>https://twitter.com/dog_rates/status/718460005...</td>
+      <td>9</td>
       <td>10</td>
-      <td>10</td>
-      <td>a</td>
+      <td>Bowie</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
     </tr>
     <tr>
-      <th>503</th>
-      <td>813066809284972545</td>
+      <th>777</th>
+      <td>776088319444877312</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2016-12-25 17:00:08 +0000</td>
+      <td>2016-09-14 16:00:49 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>This is Tyr. He is disgusted by holiday traffi...</td>
+      <td>I can't tap the screen to make the hearts appe...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/813066809...</td>
-      <td>12</td>
+      <td>https://twitter.com/dog_rates/status/776088319...</td>
       <td>10</td>
-      <td>Tyr</td>
+      <td>10</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1130</th>
+      <td>729113531270991872</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-05-08 00:59:46 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>"Challenge accepted"\n10/10 https://t.co/vNjvr...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/729113531...</td>
+      <td>10</td>
+      <td>10</td>
+      <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -13833,6 +13820,14 @@ memory usage: 313.0+ KB
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It si clear that we have 181 tweets that are retweets and 78 tweets that are replies. That means these are not original tweets and will need to be filtered out.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we start exploring the ratings data.</p>
 
 </div>
 </div>
@@ -13912,39 +13907,19 @@ memory usage: 313.0+ KB
   </thead>
   <tbody>
     <tr>
-      <th>1351</th>
-      <td>704054845121142784</td>
+      <th>1165</th>
+      <td>722974582966214656</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2016-02-28 21:25:30 +0000</td>
+      <td>2016-04-21 02:25:47 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>Here is a whole flock of puppers.  60/50 I'll ...</td>
+      <td>Happy 4/20 from the squad! 13/10 for all https...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/704054845...</td>
-      <td>60</td>
-      <td>50</td>
-      <td>a</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>313</th>
-      <td>835246439529840640</td>
-      <td>8.352460e+17</td>
-      <td>26259576.0</td>
-      <td>2017-02-24 21:54:03 +0000</td>
-      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>@jonnysun @Lin_Manuel ok jomny I know you're e...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>960</td>
-      <td>0</td>
+      <td>https://twitter.com/dog_rates/status/722974582...</td>
+      <td>4</td>
+      <td>20</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -13952,19 +13927,39 @@ memory usage: 313.0+ KB
       <td>None</td>
     </tr>
     <tr>
-      <th>784</th>
-      <td>775096608509886464</td>
+      <th>902</th>
+      <td>758467244762497024</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2016-09-11 22:20:06 +0000</td>
+      <td>2016-07-28 01:00:57 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>RT @dog_rates: After so many requests, this is...</td>
-      <td>7.403732e+17</td>
-      <td>4.196984e+09</td>
-      <td>2016-06-08 02:41:38 +0000</td>
-      <td>https://twitter.com/dog_rates/status/740373189...</td>
-      <td>9</td>
-      <td>11</td>
+      <td>Why does this never happen at my front door......</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/758467244...</td>
+      <td>165</td>
+      <td>150</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1254</th>
+      <td>710658690886586372</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-03-18 02:46:49 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Here's a brigade of puppers. All look very pre...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/710658690...</td>
+      <td>80</td>
+      <td>80</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -14056,6 +14051,14 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next we begin exploring the 'name' column as it was noticed from the visual assessment that it contained some words that are not considered to be actual names.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -14069,17 +14072,17 @@ Name: rating_numerator, dtype: int64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>None       745
-a           55
-Charlie     12
-Oliver      11
-Cooper      11
-          ... 
-Rinna        1
-Jazz         1
-Lugan        1
-Evy          1
-Sobe         1
+<pre>None        745
+a            55
+Charlie      12
+Oliver       11
+Cooper       11
+           ... 
+Link          1
+Finnegus      1
+Heinrich      1
+Wafer         1
+Willie        1
 Name: name, Length: 957, dtype: int64</pre>
 </div>
 
@@ -14100,7 +14103,7 @@ Name: name, Length: 957, dtype: int64</pre>
     <div class="prompt"> </div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[&#39;a&#39;, &#39;the&#39;, &#39;an&#39;, &#39;very&#39;, &#39;quite&#39;, &#39;one&#39;, &#39;just&#39;, &#39;mad&#39;, &#39;not&#39;, &#39;getting&#39;, &#39;actually&#39;, &#39;my&#39;, &#39;incredibly&#39;, &#39;by&#39;, &#39;O&#39;, &#39;life&#39;, &#39;unacceptable&#39;, &#39;officially&#39;, &#39;his&#39;, &#39;this&#39;, &#39;all&#39;, &#39;infuriating&#39;, &#39;old&#39;, &#39;light&#39;, &#39;space&#39;, &#39;such&#39;]
+<pre>[&#39;a&#39;, &#39;the&#39;, &#39;an&#39;, &#39;very&#39;, &#39;quite&#39;, &#39;one&#39;, &#39;just&#39;, &#39;mad&#39;, &#39;getting&#39;, &#39;not&#39;, &#39;actually&#39;, &#39;O&#39;, &#39;his&#39;, &#39;unacceptable&#39;, &#39;this&#39;, &#39;space&#39;, &#39;old&#39;, &#39;officially&#39;, &#39;incredibly&#39;, &#39;by&#39;, &#39;infuriating&#39;, &#39;light&#39;, &#39;all&#39;, &#39;life&#39;, &#39;my&#39;, &#39;such&#39;]
 </pre>
 </div>
 </div>
@@ -14114,6 +14117,14 @@ Name: name, Length: 957, dtype: int64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The name column has a lot of missing values that are indicated as "None" in a string format.
 Also, it contained a lot of words that should not be considered names. that probably happened because the extraction process assumed that names only and must come after the words "this is" which is not always true.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>According to the <em>Dogtionary</em>, doggo, floofer, pupper and puppo are all dog stages. We have to explore these columns together to get better insight about the data.</p>
 
 </div>
 </div>
@@ -14252,79 +14263,79 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>901</th>
-      <td>700002074055016451</td>
-      <td>https://pbs.twimg.com/media/CbboKP4WIAAw8xq.jpg</td>
+      <th>228</th>
+      <td>670385711116361728</td>
+      <td>https://pbs.twimg.com/media/CU2wPyWWUAAb1MJ.jpg</td>
       <td>1</td>
-      <td>Chihuahua</td>
-      <td>0.369488</td>
+      <td>whippet</td>
+      <td>0.178027</td>
       <td>True</td>
-      <td>schipperke</td>
-      <td>0.243367</td>
+      <td>Chesapeake_Bay_retriever</td>
+      <td>0.105969</td>
       <td>True</td>
-      <td>pug</td>
-      <td>0.161614</td>
+      <td>beagle</td>
+      <td>0.078720</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>2064</th>
-      <td>890006608113172480</td>
-      <td>https://pbs.twimg.com/media/DFnwSY4WAAAMliS.jpg</td>
+      <th>147</th>
+      <td>668631377374486528</td>
+      <td>https://pbs.twimg.com/media/CUd0sSvWsAA85wO.jpg</td>
       <td>1</td>
-      <td>Samoyed</td>
-      <td>0.957979</td>
+      <td>miniature_schnauzer</td>
+      <td>0.904549</td>
       <td>True</td>
+      <td>Australian_terrier</td>
+      <td>0.022529</td>
+      <td>True</td>
+      <td>silky_terrier</td>
+      <td>0.015243</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1583</th>
+      <td>796865951799083009</td>
+      <td>https://pbs.twimg.com/media/Cw8JWZ2UsAAJOZ6.jpg</td>
+      <td>1</td>
+      <td>Cardigan</td>
+      <td>0.839129</td>
+      <td>True</td>
+      <td>Boston_bull</td>
+      <td>0.080699</td>
+      <td>True</td>
+      <td>Pembroke</td>
+      <td>0.034505</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1434</th>
+      <td>773670353721753600</td>
+      <td>https://pbs.twimg.com/media/CryhFC0XEAA9wp_.jpg</td>
+      <td>1</td>
+      <td>Old_English_sheepdog</td>
+      <td>0.969311</td>
+      <td>True</td>
+      <td>Maltese_dog</td>
+      <td>0.013243</td>
+      <td>True</td>
+      <td>soft-coated_wheaten_terrier</td>
+      <td>0.004857</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>426</th>
+      <td>674082852460433408</td>
+      <td>https://pbs.twimg.com/media/CVrSxy7WsAAFD2F.jpg</td>
+      <td>1</td>
       <td>Pomeranian</td>
-      <td>0.013884</td>
+      <td>0.666957</td>
       <td>True</td>
-      <td>chow</td>
-      <td>0.008167</td>
+      <td>Shetland_sheepdog</td>
+      <td>0.028019</td>
       <td>True</td>
-    </tr>
-    <tr>
-      <th>1195</th>
-      <td>740365076218183684</td>
-      <td>https://pbs.twimg.com/media/CkZOGhJWsAAHvPv.jpg</td>
-      <td>1</td>
-      <td>bow_tie</td>
-      <td>0.246313</td>
+      <td>ski_mask</td>
+      <td>0.020683</td>
       <td>False</td>
-      <td>Windsor_tie</td>
-      <td>0.172446</td>
-      <td>False</td>
-      <td>mushroom</td>
-      <td>0.137516</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>1701</th>
-      <td>817120970343411712</td>
-      <td>https://pbs.twimg.com/media/C1b_LSYUsAAJ494.jpg</td>
-      <td>1</td>
-      <td>Saluki</td>
-      <td>0.568809</td>
-      <td>True</td>
-      <td>Afghan_hound</td>
-      <td>0.229352</td>
-      <td>True</td>
-      <td>golden_retriever</td>
-      <td>0.157130</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>1120</th>
-      <td>726828223124897792</td>
-      <td>https://pbs.twimg.com/media/ChY2aHyWMAAbNQE.jpg</td>
-      <td>1</td>
-      <td>miniature_pinscher</td>
-      <td>0.255327</td>
-      <td>True</td>
-      <td>Border_terrier</td>
-      <td>0.181279</td>
-      <td>True</td>
-      <td>Labrador_retriever</td>
-      <td>0.125185</td>
-      <td>True</td>
     </tr>
   </tbody>
 </table>
@@ -14427,8 +14438,8 @@ Name: img_num, dtype: int64</pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>prediction levels are seperated in different columns while they actually all represent one variable "prediction_level" </li>
-<li>Even though some tweets have more than one image but no duplicates were found.</li>
+<li>prediction levels are separated in different columns while they actually all represent one variable "prediction_level" </li>
+<li>Even though some tweets have more than one image but no duplicates were found. That means that even though tweets might contain multiple images, we only have one image per tweet for prediction.</li>
 </ul>
 
 </div>
@@ -14598,11 +14609,11 @@ memory usage: 36.0+ KB
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="2.4-Assesing-Output">2.4 Assesing Output<a class="anchor-link" href="#2.4-Assesing-Output">&#182;</a></h2><p>After the data was assessed both visually and programmatically, The following issues were concluded:</p>
+<h2 id="2.4-Assessing-Output">2.4 Assessing Output<a class="anchor-link" href="#2.4-Assessing-Output">&#182;</a></h2><p>After the data was assessed both visually and programmatically, The following issues were concluded:</p>
 <h3 id="Quality">Quality<a class="anchor-link" href="#Quality">&#182;</a></h3><h4 id="Completeness:">Completeness:<a class="anchor-link" href="#Completeness:">&#182;</a></h4><p>do we have all of the records that we should? Do we have missing records or not? Are there specific rows, columns, or cells missing?</p>
 <p><code>df_archive</code></p>
 <ul>
-<li>'expanded_urls' have missing values. taht means they don't have image information.</li>
+<li>'expanded_urls' have missing values. that means they don't have image information.</li>
 </ul>
 <p><code>df_api</code></p>
 <ul>
@@ -14627,7 +14638,7 @@ memory usage: 36.0+ KB
 <ul>
 <li>not all 'rating_denominator' values are 10.</li>
 <li>The 'rating_numerator' column has some very low or very large values.</li>
-<li>'timestamp' and 'retweeted_status_timestamp' column is has type of srting. should be datetime.</li>
+<li>'timestamp' and 'retweeted_status_timestamp' column is has type of string. should be datetime.</li>
 <li>the 'source' column values are the complete 'a' tag. Should be reduced to only be actual source values:<br>
   iPhone, Vine, Web Client and TweetDeck</li>
 <li>The 'name' columns missing values are labeled 'None'.</li>
@@ -14638,11 +14649,11 @@ memory usage: 36.0+ KB
 </ul>
 <h3 id="Tidiness">Tidiness<a class="anchor-link" href="#Tidiness">&#182;</a></h3><p><code>df_archive</code></p>
 <ul>
-<li>The dog stages columns ('doggo', 'flooofer', 'pupper', 'puppo') should be one column instead.</li>
+<li>The dog stages columns ('doggo', 'flooofer', 'pupper', 'puppo') should be one column instead. Beacause every column should be a variable not values of the same variable.</li>
 </ul>
 <p><code>df_pred</code></p>
 <ul>
-<li>Multiple predictions exist in the same row. the doean't follow the tisiness rule 'every row is an observation'. Each prediction should be its own row instead.</li>
+<li>Multiple predictions exist in the same row. the don't follow the tidiness rule 'every row is an observation'. Each prediction should be its own row instead.</li>
 </ul>
 <p><code>df_api</code></p>
 <ul>
@@ -14974,65 +14985,6 @@ Name: dog_stage, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"> </div>
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>tweet_id</th>
-      <th>text</th>
-      <th>rating_numerator</th>
-      <th>rating_denominator</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>979</th>
-      <td>749981277374128128</td>
-      <td>This is Atticus. He's quite simply America af....</td>
-      <td>1776</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>2074</th>
-      <td>670842764863651840</td>
-      <td>After so many requests... here you go.\n\nGood...</td>
-      <td>420</td>
-      <td>10</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -15183,11 +15135,11 @@ Name: rating_numerator, dtype: int64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Index([       nan,     &#39;Lucy&#39;,  &#39;Charlie&#39;,   &#39;Cooper&#39;,   &#39;Oliver&#39;,   &#39;Tucker&#39;,
-          &#39;Penny&#39;,    &#39;Sadie&#39;,     &#39;Lola&#39;,  &#39;Winston&#39;,
+<pre>Index([      nan, &#39;Charlie&#39;,    &#39;Lucy&#39;,  &#39;Cooper&#39;,  &#39;Oliver&#39;,   &#39;Penny&#39;,
+        &#39;Tucker&#39;,   &#39;Sadie&#39;, &#39;Winston&#39;,    &#39;Lola&#39;,
        ...
-       &#39;Ashleigh&#39;,    &#39;Tilly&#39;,      &#39;Ace&#39;,    &#39;Bubba&#39;,    &#39;Dewey&#39;,    &#39;Mitch&#39;,
-           &#39;Hanz&#39;,   &#39;Rooney&#39;,      &#39;Alf&#39;,     &#39;Liam&#39;],
+         &#39;Mitch&#39;, &#39;Cuddles&#39;,   &#39;Logan&#39;,   &#39;Boots&#39;,   &#39;Perry&#39;, &#39;Juckson&#39;,
+        &#39;Reagan&#39;,   &#39;Pablo&#39;,    &#39;Todo&#39;,   &#39;Oddie&#39;],
       dtype=&#39;object&#39;, length=955)</pre>
 </div>
 
@@ -15286,64 +15238,64 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>1680</th>
-      <td>682003177596559360</td>
-      <td>2015-12-30 01:00:03+00:00</td>
+      <th>553</th>
+      <td>804026241225523202</td>
+      <td>2016-11-30 18:16:08+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>Unique dog here. Wrinkly as hell. Weird segmen...</td>
-      <td>https://twitter.com/dog_rates/status/682003177...</td>
-      <td>5</td>
+      <td>This is Bo. He's going to make me cry. 13/10 p...</td>
+      <td>https://twitter.com/dog_rates/status/804026241...</td>
+      <td>13</td>
       <td>10</td>
-      <td>NaN</td>
+      <td>Bo</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1430</th>
-      <td>697575480820686848</td>
-      <td>2016-02-11 00:18:49+00:00</td>
+      <th>1927</th>
+      <td>674051556661161984</td>
+      <td>2015-12-08 02:23:09+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Ole. He's not sure how to gravity. 8/1...</td>
-      <td>https://twitter.com/dog_rates/status/697575480...</td>
-      <td>8</td>
+      <td>This is Lucy. She knits. Specializes in tobogg...</td>
+      <td>https://twitter.com/dog_rates/status/674051556...</td>
       <td>10</td>
-      <td>Ole</td>
+      <td>10</td>
+      <td>Lucy</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>793</th>
-      <td>773547596996571136</td>
-      <td>2016-09-07 15:44:53+00:00</td>
+      <th>853</th>
+      <td>765371061932261376</td>
+      <td>2016-08-16 02:14:15+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Chelsea. She forgot how to dog. 11/10 ...</td>
-      <td>https://twitter.com/dog_rates/status/773547596...</td>
+      <td>This is Louie. He's had a long day. Did a lot ...</td>
+      <td>https://twitter.com/dog_rates/status/765371061...</td>
       <td>11</td>
       <td>10</td>
-      <td>Chelsea</td>
+      <td>Louie</td>
       <td>pupper</td>
     </tr>
     <tr>
-      <th>2034</th>
-      <td>671743150407421952</td>
-      <td>2015-12-01 17:30:22+00:00</td>
+      <th>837</th>
+      <td>767754930266464257</td>
+      <td>2016-08-22 16:06:54+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is a Tuscaloosa Alcatraz named Jacob (Yac...</td>
-      <td>https://twitter.com/dog_rates/status/671743150...</td>
+      <td>This is Philbert. His toilet broke and he does...</td>
+      <td>https://twitter.com/dog_rates/status/767754930...</td>
       <td>11</td>
       <td>10</td>
-      <td>Jacob</td>
+      <td>Philbert</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>519</th>
-      <td>810284430598270976</td>
-      <td>2016-12-18 00:43:57+00:00</td>
+      <th>1467</th>
+      <td>694329668942569472</td>
+      <td>2016-02-02 01:21:07+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Phil. He's a father. A very good fathe...</td>
-      <td>https://twitter.com/dog_rates/status/810284430...</td>
-      <td>13</td>
+      <td>Meet Grady. He's very hungry. Too bad no one c...</td>
+      <td>https://twitter.com/dog_rates/status/694329668...</td>
+      <td>9</td>
       <td>10</td>
-      <td>Phil</td>
-      <td>NaN</td>
+      <td>Grady</td>
+      <td>pupper</td>
     </tr>
   </tbody>
 </table>
@@ -15427,54 +15379,54 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>4358</th>
-      <td>776813020089548800</td>
-      <td>https://pbs.twimg.com/media/CsfLUDbXEAAu0VF.jpg</td>
+      <th>4869</th>
+      <td>803638050916102144</td>
+      <td>https://pbs.twimg.com/ext_tw_video_thumb/80363...</td>
       <td>1</td>
-      <td>3</td>
-      <td>standard_poodle</td>
-      <td>0.168989</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>6184</th>
-      <td>889638837579907072</td>
-      <td>https://pbs.twimg.com/media/DFihzFfXsAYGDPR.jpg</td>
       <td>1</td>
-      <td>2</td>
-      <td>boxer</td>
-      <td>0.002129</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>3226</th>
-      <td>717047459982213120</td>
-      <td>https://pbs.twimg.com/media/CfN23ArXEAEkZkz.jpg</td>
-      <td>1</td>
-      <td>2</td>
       <td>Labrador_retriever</td>
-      <td>0.012185</td>
+      <td>0.372776</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>4228</th>
-      <td>770414278348247044</td>
-      <td>https://pbs.twimg.com/media/CrEPsfWXEAAKvem.jpg</td>
-      <td>1</td>
+      <th>5184</th>
+      <td>820690176645140481</td>
+      <td>https://pbs.twimg.com/media/C2OtWr0VQAEnS9r.jpg</td>
       <td>2</td>
-      <td>maillot</td>
-      <td>0.081449</td>
+      <td>1</td>
+      <td>West_Highland_white_terrier</td>
+      <td>0.872064</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4920</th>
+      <td>807059379405148160</td>
+      <td>https://pbs.twimg.com/media/Ct2qO5PXEAE6eB0.jpg</td>
+      <td>1</td>
+      <td>1</td>
+      <td>seat_belt</td>
+      <td>0.474292</td>
       <td>False</td>
     </tr>
     <tr>
-      <th>4451</th>
-      <td>781251288990355457</td>
-      <td>https://pbs.twimg.com/media/CteP5H5WcAEhdLO.jpg</td>
+      <th>5971</th>
+      <td>873213775632977920</td>
+      <td>https://pbs.twimg.com/media/DB5HTBGXUAE0TiK.jpg</td>
+      <td>1</td>
       <td>2</td>
-      <td>3</td>
-      <td>seat_belt</td>
-      <td>0.026730</td>
-      <td>False</td>
+      <td>bloodhound</td>
+      <td>0.338069</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2739</th>
+      <td>700864154249383937</td>
+      <td>https://pbs.twimg.com/media/Cbn4OqKWwAADGWt.jpg</td>
+      <td>1</td>
+      <td>1</td>
+      <td>kuvasz</td>
+      <td>0.805857</td>
+      <td>True</td>
     </tr>
   </tbody>
 </table>
@@ -15614,46 +15566,46 @@ dtype: object</pre>
   </thead>
   <tbody>
     <tr>
-      <th>886</th>
-      <td>674447403907457024</td>
-      <td>2015-12-09 04:36:06+00:00</td>
+      <th>187</th>
+      <td>847251039262605312</td>
+      <td>2017-03-30 00:56:03+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This pupper just wants a belly rub. This puppe...</td>
-      <td>https://twitter.com/dog_rates/status/674447403...</td>
+      <td>This is Furzey. He's doing an elevated sandy z...</td>
+      <td>https://twitter.com/dog_rates/status/847251039...</td>
+      <td>12</td>
       <td>10</td>
-      <td>10</td>
+      <td>Furzey</td>
       <td>NaN</td>
-      <td>pupper</td>
-      <td>338</td>
-      <td>1008</td>
+      <td>4136</td>
+      <td>19849</td>
     </tr>
     <tr>
-      <th>991</th>
-      <td>672222792075620352</td>
-      <td>2015-12-03 01:16:17+00:00</td>
+      <th>1222</th>
+      <td>667832474953625600</td>
+      <td>2015-11-20 22:30:44+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Cal. He's a Swedish Geriatric Cheddar....</td>
-      <td>https://twitter.com/dog_rates/status/672222792...</td>
-      <td>9</td>
+      <td>THE EYES 12/10\n\nI'm sorry. These are suppose...</td>
+      <td>https://twitter.com/dog_rates/status/667832474...</td>
+      <td>12</td>
       <td>10</td>
-      <td>Cal</td>
       <td>NaN</td>
-      <td>194</td>
-      <td>742</td>
+      <td>NaN</td>
+      <td>56</td>
+      <td>273</td>
     </tr>
     <tr>
-      <th>730</th>
-      <td>679503373272485890</td>
-      <td>2015-12-23 03:26:43+00:00</td>
+      <th>147</th>
+      <td>857393404942143489</td>
+      <td>2017-04-27 00:38:11+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Dwight. He's a pointy pupper. Very doc...</td>
-      <td>https://twitter.com/dog_rates/status/679503373...</td>
-      <td>8</td>
+      <td>Instead of the usual nightly dog rate, I'm sha...</td>
+      <td>https://www.gofundme.com/meeko-needs-heart-sur...</td>
+      <td>13</td>
       <td>10</td>
-      <td>Dwight</td>
-      <td>pupper</td>
-      <td>1409</td>
-      <td>3072</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1525</td>
+      <td>5568</td>
     </tr>
   </tbody>
 </table>
@@ -15694,6 +15646,14 @@ dtype: object</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The exported files are then analyzed and visualized in a separate file <a href="act_report.html">act_report.html</a></p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
