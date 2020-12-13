@@ -13132,9 +13132,9 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="1.-Gathering">1. Gathering<a class="anchor-link" href="#1.-Gathering">&#182;</a></h1><p>Three sources of data were gathered for this Project:</p>
 <ol>
-<li>Twitter acrhive provided by WeRateDogs</li>
-<li>Image predictions from the neural network data downloaded programatically.</li>
-<li>Information from the Twitter API scraped programatically.</li>
+<li>Twitter archive provided by WeRateDogs</li>
+<li>Image predictions from the neural network data downloaded programmatically.</li>
+<li>Information from the Twitter API scraped programmatically.</li>
 </ol>
 
 </div>
@@ -13143,12 +13143,30 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We begin by importing the required libraries and packages that will help us in our data wranglling and analysis</p>
+<p>We begin by importing the required libraries and packages that will help us in our data wrangling and analysis</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered celltag_hide-input">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#import required libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">tweepy</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13163,6 +13181,17 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;twitter-archive-enhanced.csv&#39;</span><span class="p">)</span>
+<span class="n">df_archive</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13170,7 +13199,8 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[2]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -13297,6 +13327,28 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Download image predictions file if it doesn&#39;t exist</span>
+<span class="n">pred_url</span> <span class="o">=</span> <span class="s1">&#39;https://d17h27t6h515a5.cloudfront.net/topher/2017/August/599fd2ad_image-predictions/image-predictions.tsv&#39;</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="n">pred_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># only download the file if the file doesn&#39;t already exist on disk.</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> already exists&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pred_url</span><span class="p">)</span>
+    <span class="c1"># write the reponse to a local file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;image-predictions.tsv&#39;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;successfully downloaded </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> and written to disc&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13304,7 +13356,8 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>File image-predictions.tsv already exists
@@ -13362,48 +13415,48 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>343</th>
-      <td>672264251789176834</td>
-      <td>https://pbs.twimg.com/media/CVRcxJ-WsAAXOhO.jpg</td>
+      <th>663</th>
+      <td>682662431982772225</td>
+      <td>https://pbs.twimg.com/media/CXlN1-EWMAQdwXK.jpg</td>
       <td>1</td>
-      <td>Chihuahua</td>
-      <td>0.609860</td>
-      <td>True</td>
-      <td>teddy</td>
-      <td>0.068134</td>
-      <td>False</td>
-      <td>Norwich_terrier</td>
-      <td>0.059227</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>1055</th>
-      <td>714258258790387713</td>
-      <td>https://pbs.twimg.com/media/CemOGNjWQAEoN7R.jpg</td>
-      <td>1</td>
-      <td>collie</td>
-      <td>0.176758</td>
-      <td>True</td>
-      <td>Chesapeake_Bay_retriever</td>
-      <td>0.101834</td>
-      <td>True</td>
       <td>beagle</td>
-      <td>0.101294</td>
+      <td>0.413824</td>
+      <td>True</td>
+      <td>Cardigan</td>
+      <td>0.263553</td>
+      <td>True</td>
+      <td>basset</td>
+      <td>0.167618</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>616</th>
-      <td>680191257256136705</td>
-      <td>https://pbs.twimg.com/media/CXCGVXyWsAAAVHE.jpg</td>
+      <th>894</th>
+      <td>699434518667751424</td>
+      <td>https://pbs.twimg.com/media/CbTj--1XEAIZjc_.jpg</td>
       <td>1</td>
-      <td>Brittany_spaniel</td>
-      <td>0.733253</td>
+      <td>golden_retriever</td>
+      <td>0.836572</td>
       <td>True</td>
-      <td>Welsh_springer_spaniel</td>
-      <td>0.251634</td>
+      <td>kuvasz</td>
+      <td>0.105946</td>
       <td>True</td>
-      <td>English_springer</td>
-      <td>0.009243</td>
+      <td>Labrador_retriever</td>
+      <td>0.025144</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>710</th>
+      <td>685307451701334016</td>
+      <td>https://pbs.twimg.com/media/CYKzfTTWMAEeTN7.jpg</td>
+      <td>1</td>
+      <td>Pomeranian</td>
+      <td>0.963176</td>
+      <td>True</td>
+      <td>Shetland_sheepdog</td>
+      <td>0.019468</td>
+      <td>True</td>
+      <td>keeshond</td>
+      <td>0.008605</td>
       <td>True</td>
     </tr>
   </tbody>
@@ -13421,7 +13474,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="1.3-Twitter-API">1.3 Twitter API<a class="anchor-link" href="#1.3-Twitter-API">&#182;</a></h2><ul>
-<li>A Twitter Developer account was created and used to qurey more data using the tweet ids from the <code>df_archive</code> DataFrame.</li>
+<li>A Twitter Developer account was created and used to query more data using the tweet ids from the <code>df_archive</code> DataFrame.</li>
 <li>The Twitter API was used to query each tweet's JSON data using Python's Tweepy library and stored each tweet's entire set of JSON data as a line in a file called tweet_json.txt file.</li>
 <li><p>The 'tweet._json.txt' file line by line into a pandas DataFrame <code>df_api</code> with the following columns:</p>
 <ul>
@@ -13438,6 +13491,51 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tweet_ids</span> <span class="o">=</span> <span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">]</span>
+<span class="n">json_file</span> <span class="o">=</span> <span class="s1">&#39;tweet_json.txt&#39;</span>
+
+
+<span class="c1"># only Query the API if the tweet_json.txt file doesn&#39;t exist</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">json_file</span><span class="si">}</span><span class="s2"> already exists&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># import the keys files where the API keys are stored and it is not submitted with the project</span>
+    <span class="kn">import</span> <span class="nn">keys</span>
+    <span class="c1"># Twitter API authorization </span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">consumer_key</span><span class="p">,</span> <span class="n">keys</span><span class="o">.</span><span class="n">consumer_secret</span><span class="p">)</span>
+    <span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">keys</span><span class="o">.</span><span class="n">access_token</span><span class="p">,</span> <span class="n">keys</span><span class="o">.</span><span class="n">access_secret</span><span class="p">)</span>
+
+    <span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+    
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">fails_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Save each tweet&#39;s returned JSON as a new line in a .txt file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="c1"># Loop through each tweet and write its information into a separate line of the .txt file</span>
+        <span class="k">for</span> <span class="n">tweet_id</span> <span class="ow">in</span> <span class="n">tweet_ids</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">tweet_id</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tweet</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">tweet_id</span><span class="p">,</span> <span class="n">tweet_mode</span><span class="o">=</span><span class="s1">&#39;extended&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Success&quot;</span><span class="p">)</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">_json</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">TweepError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fail&quot;</span><span class="p">)</span>
+                <span class="n">fails_dict</span><span class="p">[</span><span class="n">tweet_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="k">pass</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">json_file</span><span class="si">}</span><span class="s2"> successfully written to Disk&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Some tweets returned the following errors&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">fails_dict</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13445,7 +13543,8 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>File tweet_json.txt already exists
@@ -13458,6 +13557,31 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># read .txt file line by line into a pandas DataFrame</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">,</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">]</span>
+
+<span class="n">df_api</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">df_api</span> <span class="o">=</span> <span class="n">df_api</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;tweet_id&#39;</span><span class="p">:</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;retweet_count&#39;</span><span class="p">:</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;favorite_count&#39;</span><span class="p">:</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">]</span>
+            <span class="p">},</span><span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+<span class="n">df_api</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13465,7 +13589,8 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[6]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -13494,34 +13619,34 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th>209</th>
-      <td>850333567704068097</td>
-      <td>311</td>
-      <td>3333</td>
+      <th>465</th>
+      <td>815639385530101762</td>
+      <td>1633</td>
+      <td>8164</td>
     </tr>
     <tr>
-      <th>854</th>
-      <td>761004547850530816</td>
-      <td>3407</td>
-      <td>11152</td>
+      <th>1314</th>
+      <td>670040295598354432</td>
+      <td>104</td>
+      <td>706</td>
     </tr>
     <tr>
-      <th>848</th>
-      <td>761672994376806400</td>
-      <td>28468</td>
-      <td>48641</td>
+      <th>1371</th>
+      <td>668872652652679168</td>
+      <td>279</td>
+      <td>493</td>
     </tr>
     <tr>
-      <th>562</th>
-      <td>800459316964663297</td>
-      <td>2167</td>
-      <td>9477</td>
+      <th>717</th>
+      <td>781163403222056960</td>
+      <td>2720</td>
+      <td>9727</td>
     </tr>
     <tr>
-      <th>1252</th>
-      <td>670838202509447168</td>
-      <td>643</td>
-      <td>1043</td>
+      <th>691</th>
+      <td>785170936622350336</td>
+      <td>4774</td>
+      <td>11947</td>
     </tr>
   </tbody>
 </table>
@@ -13537,7 +13662,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="1.4-Gathering-Output">1.4 Gathering Output<a class="anchor-link" href="#1.4-Gathering-Output">&#182;</a></h2><p>The three files were successfully downloded, written to a local file and read into the following pandas DataFrames:</p>
+<h2 id="1.4-Gathering-Output">1.4 Gathering Output<a class="anchor-link" href="#1.4-Gathering-Output">&#182;</a></h2><p>The three files were successfully downloaded, written to a local file and read into the following pandas DataFrames:</p>
 <ul>
 <li><code>df_archive</code>:  Data from the WeRateDogs Twitter archive.</li>
 <li><code>df_pred</code>:  Data from the image predictions from the neural network.</li>
@@ -13557,8 +13682,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We start assesing the data to try to find any Quality or tidiness issues.</p>
-<p>The aim is to asses all three dataframes with respect to Quality dimensions:</p>
+<p>We start assessing the data to try to find any Quality or tidiness issues.</p>
+<p>The aim is to asses all three DataFrames with respect to Quality dimensions:</p>
 <ul>
 <li>Completeness</li>
 <li>Validity</li>
@@ -13591,6 +13716,16 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13598,7 +13733,8 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
@@ -13634,6 +13770,16 @@ memory usage: 313.0+ KB
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13641,7 +13787,8 @@ memory usage: 313.0+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[8]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -13684,18 +13831,78 @@ memory usage: 313.0+ KB
   </thead>
   <tbody>
     <tr>
-      <th>1979</th>
-      <td>672980819271634944</td>
+      <th>2327</th>
+      <td>666407126856765440</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2015-12-05 03:28:25 +0000</td>
+      <td>2015-11-17 00:06:54 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>Extraordinary dog here. Looks large. Just a he...</td>
+      <td>This is a southern Vesuvius bumblegruff. Can d...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/672980819...</td>
-      <td>5</td>
+      <td>https://twitter.com/dog_rates/status/666407126...</td>
+      <td>7</td>
+      <td>10</td>
+      <td>a</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>940</th>
+      <td>753026973505581056</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-07-13 00:43:15 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Say hello to Tayzie. She's a Barbadian Bugaboo...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/753026973...</td>
+      <td>10</td>
+      <td>10</td>
+      <td>Tayzie</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1377</th>
+      <td>701601587219795968</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-02-22 02:57:08 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>This is Coopson. He's a Blingin Schnitzel. Bui...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/701601587...</td>
+      <td>10</td>
+      <td>10</td>
+      <td>Coopson</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2131</th>
+      <td>670086499208155136</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2015-11-27 03:47:25 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>"Hi yes this is dog. I can't help with that s-...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>https://twitter.com/dog_rates/status/670086499...</td>
+      <td>10</td>
       <td>10</td>
       <td>None</td>
       <td>None</td>
@@ -13704,80 +13911,20 @@ memory usage: 313.0+ KB
       <td>None</td>
     </tr>
     <tr>
-      <th>559</th>
-      <td>803276597545603072</td>
+      <th>475</th>
+      <td>816062466425819140</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>2016-11-28 16:37:19 +0000</td>
+      <td>2017-01-02 23:23:48 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>This is Winston. His selfie game is legendary....</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/803276597...</td>
+      <td>RT @dog_rates: Meet Jack. He's one of the rare...</td>
+      <td>8.159907e+17</td>
+      <td>4.196984e+09</td>
+      <td>2017-01-02 18:38:42 +0000</td>
+      <td>https://www.gofundme.com/surgeryforjacktheminp...</td>
       <td>11</td>
       <td>10</td>
-      <td>Winston</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1187</th>
-      <td>718460005985447936</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-04-08 15:26:28 +0000</td>
-      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>Meet Bowie. He's listening for underground squ...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/718460005...</td>
-      <td>9</td>
-      <td>10</td>
-      <td>Bowie</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>777</th>
-      <td>776088319444877312</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-09-14 16:00:49 +0000</td>
-      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>I can't tap the screen to make the hearts appe...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/776088319...</td>
-      <td>10</td>
-      <td>10</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1130</th>
-      <td>729113531270991872</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-05-08 00:59:46 +0000</td>
-      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>"Challenge accepted"\n10/10 https://t.co/vNjvr...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/729113531...</td>
-      <td>10</td>
-      <td>10</td>
-      <td>None</td>
+      <td>Jack</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -13795,6 +13942,17 @@ memory usage: 313.0+ KB
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check for duplicated entries</span>
+<span class="nb">sum</span><span class="p">(</span><span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13802,7 +13960,8 @@ memory usage: 313.0+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[9]:</div>
+
 
 
 
@@ -13833,6 +13992,16 @@ memory usage: 313.0+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13840,7 +14009,8 @@ memory usage: 313.0+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[10]:</div>
+
 
 
 
@@ -13907,39 +14077,19 @@ memory usage: 313.0+ KB
   </thead>
   <tbody>
     <tr>
-      <th>1165</th>
-      <td>722974582966214656</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-04-21 02:25:47 +0000</td>
+      <th>1663</th>
+      <td>682808988178739200</td>
+      <td>6.827884e+17</td>
+      <td>4.196984e+09</td>
+      <td>2016-01-01 06:22:03 +0000</td>
       <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>Happy 4/20 from the squad! 13/10 for all https...</td>
+      <td>I'm aware that I could've said 20/16, but here...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/722974582...</td>
-      <td>4</td>
+      <td>NaN</td>
       <td>20</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>902</th>
-      <td>758467244762497024</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2016-07-28 01:00:57 +0000</td>
-      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
-      <td>Why does this never happen at my front door......</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>https://twitter.com/dog_rates/status/758467244...</td>
-      <td>165</td>
-      <td>150</td>
+      <td>16</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -13966,6 +14116,26 @@ memory usage: 313.0+ KB
       <td>None</td>
       <td>None</td>
     </tr>
+    <tr>
+      <th>1598</th>
+      <td>686035780142297088</td>
+      <td>6.860340e+17</td>
+      <td>4.196984e+09</td>
+      <td>2016-01-10 04:04:10 +0000</td>
+      <td>&lt;a href="http://twitter.com/download/iphone" r...</td>
+      <td>Yes I do realize a rating of 4/20 would've bee...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4</td>
+      <td>20</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -13978,6 +14148,16 @@ memory usage: 313.0+ KB
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13985,7 +14165,8 @@ memory usage: 313.0+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[12]:</div>
+
 
 
 
@@ -14060,6 +14241,16 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14067,22 +14258,23 @@ Name: rating_numerator, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[13]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>None        745
-a            55
-Charlie      12
-Oliver       11
-Cooper       11
-           ... 
-Link          1
-Finnegus      1
-Heinrich      1
-Wafer         1
-Willie        1
+<pre>None           745
+a               55
+Charlie         12
+Cooper          11
+Oliver          11
+              ... 
+Gunner           1
+Sully            1
+Rodney           1
+Brownie          1
+Shakespeare      1
 Name: name, Length: 957, dtype: int64</pre>
 </div>
 
@@ -14093,6 +14285,22 @@ Name: name, Length: 957, dtype: int64</pre>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="n">df_archive</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">not_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">not_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">not_names</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14100,10 +14308,11 @@ Name: name, Length: 957, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[&#39;a&#39;, &#39;the&#39;, &#39;an&#39;, &#39;very&#39;, &#39;quite&#39;, &#39;one&#39;, &#39;just&#39;, &#39;mad&#39;, &#39;getting&#39;, &#39;not&#39;, &#39;actually&#39;, &#39;O&#39;, &#39;his&#39;, &#39;unacceptable&#39;, &#39;this&#39;, &#39;space&#39;, &#39;old&#39;, &#39;officially&#39;, &#39;incredibly&#39;, &#39;by&#39;, &#39;infuriating&#39;, &#39;light&#39;, &#39;all&#39;, &#39;life&#39;, &#39;my&#39;, &#39;such&#39;]
+<pre>[&#39;a&#39;, &#39;the&#39;, &#39;an&#39;, &#39;very&#39;, &#39;one&#39;, &#39;just&#39;, &#39;quite&#39;, &#39;actually&#39;, &#39;getting&#39;, &#39;mad&#39;, &#39;not&#39;, &#39;unacceptable&#39;, &#39;incredibly&#39;, &#39;all&#39;, &#39;this&#39;, &#39;my&#39;, &#39;infuriating&#39;, &#39;light&#39;, &#39;life&#39;, &#39;old&#39;, &#39;such&#39;, &#39;space&#39;, &#39;by&#39;, &#39;his&#39;, &#39;O&#39;, &#39;officially&#39;]
 </pre>
 </div>
 </div>
@@ -14130,6 +14339,16 @@ Also, it contained a lot of words that should not be considered names. that prob
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive</span><span class="p">[[</span><span class="s1">&#39;doggo&#39;</span><span class="p">,</span><span class="s1">&#39;floofer&#39;</span><span class="p">,</span><span class="s1">&#39;pupper&#39;</span><span class="p">,</span><span class="s1">&#39;puppo&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14137,7 +14356,8 @@ Also, it contained a lot of words that should not be considered names. that prob
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[15]:</div>
+
 
 
 
@@ -14263,79 +14483,79 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>228</th>
-      <td>670385711116361728</td>
-      <td>https://pbs.twimg.com/media/CU2wPyWWUAAb1MJ.jpg</td>
+      <th>874</th>
+      <td>698178924120031232</td>
+      <td>https://pbs.twimg.com/media/CbBuBhbWwAEGH29.jpg</td>
       <td>1</td>
-      <td>whippet</td>
-      <td>0.178027</td>
-      <td>True</td>
       <td>Chesapeake_Bay_retriever</td>
-      <td>0.105969</td>
+      <td>0.351868</td>
       <td>True</td>
-      <td>beagle</td>
-      <td>0.078720</td>
+      <td>malinois</td>
+      <td>0.207753</td>
       <td>True</td>
-    </tr>
-    <tr>
-      <th>147</th>
-      <td>668631377374486528</td>
-      <td>https://pbs.twimg.com/media/CUd0sSvWsAA85wO.jpg</td>
-      <td>1</td>
-      <td>miniature_schnauzer</td>
-      <td>0.904549</td>
-      <td>True</td>
-      <td>Australian_terrier</td>
-      <td>0.022529</td>
-      <td>True</td>
-      <td>silky_terrier</td>
-      <td>0.015243</td>
+      <td>Labrador_retriever</td>
+      <td>0.154606</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>1583</th>
-      <td>796865951799083009</td>
-      <td>https://pbs.twimg.com/media/Cw8JWZ2UsAAJOZ6.jpg</td>
-      <td>1</td>
-      <td>Cardigan</td>
-      <td>0.839129</td>
-      <td>True</td>
-      <td>Boston_bull</td>
-      <td>0.080699</td>
-      <td>True</td>
-      <td>Pembroke</td>
-      <td>0.034505</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>1434</th>
-      <td>773670353721753600</td>
-      <td>https://pbs.twimg.com/media/CryhFC0XEAA9wp_.jpg</td>
-      <td>1</td>
-      <td>Old_English_sheepdog</td>
-      <td>0.969311</td>
-      <td>True</td>
-      <td>Maltese_dog</td>
-      <td>0.013243</td>
-      <td>True</td>
-      <td>soft-coated_wheaten_terrier</td>
-      <td>0.004857</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>426</th>
-      <td>674082852460433408</td>
-      <td>https://pbs.twimg.com/media/CVrSxy7WsAAFD2F.jpg</td>
-      <td>1</td>
-      <td>Pomeranian</td>
-      <td>0.666957</td>
-      <td>True</td>
-      <td>Shetland_sheepdog</td>
-      <td>0.028019</td>
-      <td>True</td>
-      <td>ski_mask</td>
-      <td>0.020683</td>
+      <th>1665</th>
+      <td>812503143955202048</td>
+      <td>https://pbs.twimg.com/media/C0aXTLqXEAADxBi.jpg</td>
+      <td>2</td>
+      <td>loupe</td>
+      <td>0.546856</td>
       <td>False</td>
+      <td>web_site</td>
+      <td>0.345298</td>
+      <td>False</td>
+      <td>bubble</td>
+      <td>0.010528</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>329</th>
+      <td>672082170312290304</td>
+      <td>https://pbs.twimg.com/media/CVO3KodXAAAj1de.jpg</td>
+      <td>1</td>
+      <td>hamster</td>
+      <td>0.132440</td>
+      <td>False</td>
+      <td>toy_poodle</td>
+      <td>0.123962</td>
+      <td>True</td>
+      <td>bubble</td>
+      <td>0.056212</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1653</th>
+      <td>809920764300447744</td>
+      <td>https://pbs.twimg.com/media/Cz1qo05XUAQ4qXp.jpg</td>
+      <td>1</td>
+      <td>Norwich_terrier</td>
+      <td>0.397163</td>
+      <td>True</td>
+      <td>toy_poodle</td>
+      <td>0.274540</td>
+      <td>True</td>
+      <td>miniature_poodle</td>
+      <td>0.134667</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>489</th>
+      <td>675522403582218240</td>
+      <td>https://pbs.twimg.com/media/CV_wCh8W4AEWWZ9.jpg</td>
+      <td>1</td>
+      <td>cocker_spaniel</td>
+      <td>0.299708</td>
+      <td>True</td>
+      <td>golden_retriever</td>
+      <td>0.263665</td>
+      <td>True</td>
+      <td>Irish_setter</td>
+      <td>0.080323</td>
+      <td>True</td>
     </tr>
   </tbody>
 </table>
@@ -14371,6 +14591,16 @@ Name: source, dtype: int64</pre>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pred</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14378,7 +14608,8 @@ Name: source, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
@@ -14409,6 +14640,16 @@ memory usage: 152.1+ KB
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pred</span><span class="p">[</span><span class="s1">&#39;img_num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14416,7 +14657,8 @@ memory usage: 152.1+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[20]:</div>
+
 
 
 
@@ -14453,6 +14695,16 @@ Name: img_num, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_api</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14460,7 +14712,8 @@ Name: img_num, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[21]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -14600,7 +14853,7 @@ memory usage: 36.0+ KB
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li>The 'retweet_count' and 'favorite_count' columns have the wrong datatype. </li>
-<li>The index column here is the same as the <code>df_archive</code> dataframe and they should be merged together.</li>
+<li>The index column here is the same as the <code>df_archive</code> DataFrame and they should be merged together.</li>
 </ul>
 
 </div>
@@ -14649,7 +14902,7 @@ memory usage: 36.0+ KB
 </ul>
 <h3 id="Tidiness">Tidiness<a class="anchor-link" href="#Tidiness">&#182;</a></h3><p><code>df_archive</code></p>
 <ul>
-<li>The dog stages columns ('doggo', 'flooofer', 'pupper', 'puppo') should be one column instead. Beacause every column should be a variable not values of the same variable.</li>
+<li>The dog stages columns ('doggo', 'flooofer', 'pupper', 'puppo') should be one column instead. Because every column should be a variable not values of the same variable.</li>
 </ul>
 <p><code>df_pred</code></p>
 <ul>
@@ -14677,6 +14930,14 @@ memory usage: 36.0+ KB
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We first copy the original DataFrame to a new one to be cleaned.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
@@ -14691,6 +14952,17 @@ memory usage: 36.0+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">])</span>
+<span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;retweeted_status_timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;retweeted_status_timestamp&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14701,6 +14973,17 @@ memory usage: 36.0+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check that the &#39;timestamp&#39; and &#39;retweeted_status_timestamp&#39; columns are changed to datetime</span>
+<span class="n">df_archive_clean</span><span class="p">[[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span><span class="s1">&#39;retweeted_status_timestamp&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14708,7 +14991,8 @@ memory usage: 36.0+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[25]:</div>
+
 
 
 
@@ -14735,6 +15019,17 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="p">[</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;retweeted_status_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+<span class="n">df_archive_clean</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="p">[</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;in_reply_to_status_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14745,6 +15040,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14752,7 +15057,8 @@ dtype: object</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
@@ -14798,6 +15104,16 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="p">[</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;expanded_urls&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14808,6 +15124,16 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;expanded_urls&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14815,7 +15141,8 @@ memory usage: 294.9+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[29]:</div>
+
 
 
 
@@ -14840,6 +15167,18 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;in_reply_to_status_id&#39;</span><span class="p">,</span> <span class="s1">&#39;in_reply_to_user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;retweeted_status_id&#39;</span><span class="p">,</span> <span class="s1">&#39;retweeted_status_user_id&#39;</span><span class="p">,</span> <span class="s1">&#39;retweeted_status_timestamp&#39;</span><span class="p">,]</span>
+
+<span class="n">df_archive_clean</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14850,6 +15189,16 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14857,7 +15206,8 @@ memory usage: 294.9+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[31]:</div>
+
 
 
 
@@ -14886,6 +15236,26 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dog_stage</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the dog stage based on the values of other columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stages</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;doggo&#39;</span><span class="p">,</span><span class="s1">&#39;floofer&#39;</span><span class="p">,</span><span class="s1">&#39;pupper&#39;</span><span class="p">,</span><span class="s1">&#39;puppo&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">stages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="n">stage</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">stage</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+
+<span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;dog_stage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">dog_stage</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14896,6 +15266,16 @@ memory usage: 294.9+ KB
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;dog_stage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14903,7 +15283,8 @@ memory usage: 294.9+ KB
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[33]:</div>
+
 
 
 
@@ -14933,6 +15314,18 @@ Name: dog_stage, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;doggo&#39;</span><span class="p">,</span> <span class="s1">&#39;floofer&#39;</span><span class="p">,</span> <span class="s1">&#39;pupper&#39;</span><span class="p">,</span> <span class="s1">&#39;puppo&#39;</span><span class="p">]</span>
+
+<span class="n">df_archive_clean</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14943,6 +15336,16 @@ Name: dog_stage, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14950,7 +15353,8 @@ Name: dog_stage, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[35]:</div>
+
 
 
 
@@ -14984,6 +15388,51 @@ Name: dog_stage, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fix_rating</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the dataframe row but with fixed rating numerator and denominator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">10</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">num</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prog</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;../..&#39;</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">prog</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;10&#39;</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span><span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span><span class="o">=</span> <span class="mi">10</span>
+                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+                
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prog</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;\d*\.\d*/10&#39;</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">prog</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;10&#39;</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rating_numerator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+        
+    
+    <span class="k">return</span> <span class="n">row</span>
+
+    
+<span class="n">df_archive_clean</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">fix_rating</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -14994,6 +15443,16 @@ Name: dog_stage, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;rating_denominator&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15001,7 +15460,8 @@ Name: dog_stage, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[37]:</div>
+
 
 
 
@@ -15066,6 +15526,35 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">not_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;very&#39;</span><span class="p">,</span> <span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;quite&#39;</span><span class="p">,</span> <span class="s1">&#39;just&#39;</span><span class="p">,</span> <span class="s1">&#39;mad&#39;</span><span class="p">,</span> <span class="s1">&#39;actually&#39;</span><span class="p">,</span> <span class="s1">&#39;getting&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">,</span> 
+                 <span class="s1">&#39;infuriating&#39;</span><span class="p">,</span> <span class="s1">&#39;space&#39;</span><span class="p">,</span> <span class="s1">&#39;unacceptable&#39;</span><span class="p">,</span> <span class="s1">&#39;his&#39;</span><span class="p">,</span> <span class="s1">&#39;old&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;life&#39;</span><span class="p">,</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;incredibly&#39;</span><span class="p">,</span> 
+                 <span class="s1">&#39;such&#39;</span><span class="p">,</span> <span class="s1">&#39;light&#39;</span><span class="p">,</span> <span class="s1">&#39;officially&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;by&#39;</span><span class="p">,</span> <span class="s1">&#39;my&#39;</span><span class="p">]</span>  
+
+<span class="k">def</span> <span class="nf">fix_name</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the row withthe corrected name if found and Null if no name was found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">not_names</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;None&#39;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?:name(?:d)?)\s</span><span class="si">{1}</span><span class="s1">(?:is\s)?([A-Za-z]+)&#39;</span><span class="p">)</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span> 
+
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+    <span class="k">return</span> <span class="n">row</span>
+
+
+<span class="n">df_archive_clean</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">fix_name</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15076,6 +15565,16 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span><span class="s1">&#39;text&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;name in @not_names&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15083,7 +15582,8 @@ Name: rating_numerator, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[40]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -15123,6 +15623,16 @@ Name: rating_numerator, dtype: int64</pre>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15130,16 +15640,17 @@ Name: rating_numerator, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[41]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Index([      nan, &#39;Charlie&#39;,    &#39;Lucy&#39;,  &#39;Cooper&#39;,  &#39;Oliver&#39;,   &#39;Penny&#39;,
-        &#39;Tucker&#39;,   &#39;Sadie&#39;, &#39;Winston&#39;,    &#39;Lola&#39;,
+<pre>Index([      nan, &#39;Charlie&#39;,    &#39;Lucy&#39;,  &#39;Cooper&#39;,  &#39;Oliver&#39;,  &#39;Tucker&#39;,
+         &#39;Penny&#39;,    &#39;Lola&#39;,   &#39;Sadie&#39;, &#39;Winston&#39;,
        ...
-         &#39;Mitch&#39;, &#39;Cuddles&#39;,   &#39;Logan&#39;,   &#39;Boots&#39;,   &#39;Perry&#39;, &#39;Juckson&#39;,
-        &#39;Reagan&#39;,   &#39;Pablo&#39;,    &#39;Todo&#39;,   &#39;Oddie&#39;],
+        &#39;Farfle&#39;, &#39;Strider&#39;, &#39;Eleanor&#39;,    &#39;Nico&#39;,    &#39;Kial&#39;,  &#39;Willow&#39;,
+        &#39;Spanky&#39;,    &#39;Kara&#39;,  &#39;Vinnie&#39;,  &#39;Stuart&#39;],
       dtype=&#39;object&#39;, length=955)</pre>
 </div>
 
@@ -15160,6 +15671,28 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fix_source</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the extracted string from the html tag</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?:(?!&gt;).)*?(?=(?:&lt;)|$)&#39;</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">source</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span>
+    
+    
+<span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_archive_clean</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">fix_source</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15170,6 +15703,16 @@ Name: rating_numerator, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_archive_clean</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15177,7 +15720,8 @@ Name: rating_numerator, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[43]:</div>
+
 
 
 
@@ -15238,64 +15782,64 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>553</th>
-      <td>804026241225523202</td>
-      <td>2016-11-30 18:16:08+00:00</td>
+      <th>957</th>
+      <td>751538714308972544</td>
+      <td>2016-07-08 22:09:27+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Bo. He's going to make me cry. 13/10 p...</td>
-      <td>https://twitter.com/dog_rates/status/804026241...</td>
-      <td>13</td>
+      <td>This is Max. She has one ear that's always sli...</td>
+      <td>https://twitter.com/dog_rates/status/751538714...</td>
       <td>10</td>
-      <td>Bo</td>
+      <td>10</td>
+      <td>Max</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>1927</th>
-      <td>674051556661161984</td>
-      <td>2015-12-08 02:23:09+00:00</td>
+      <th>2091</th>
+      <td>670783437142401025</td>
+      <td>2015-11-29 01:56:48+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Lucy. She knits. Specializes in tobogg...</td>
-      <td>https://twitter.com/dog_rates/status/674051556...</td>
+      <td>Flamboyant pup here. Probably poisonous. Won't...</td>
+      <td>https://twitter.com/dog_rates/status/670783437...</td>
+      <td>1</td>
       <td>10</td>
-      <td>10</td>
-      <td>Lucy</td>
+      <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>853</th>
-      <td>765371061932261376</td>
-      <td>2016-08-16 02:14:15+00:00</td>
+      <th>1344</th>
+      <td>704499785726889984</td>
+      <td>2016-03-01 02:53:32+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Louie. He's had a long day. Did a lot ...</td>
-      <td>https://twitter.com/dog_rates/status/765371061...</td>
-      <td>11</td>
+      <td>When you wake up from a long nap and have no i...</td>
+      <td>https://twitter.com/dog_rates/status/704499785...</td>
+      <td>12</td>
       <td>10</td>
-      <td>Louie</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>304</th>
+      <td>836380477523124226</td>
+      <td>2017-02-28 01:00:19+00:00</td>
+      <td>Twitter for iPhone</td>
+      <td>This is Ava. She just blasted off. Streamline ...</td>
+      <td>https://twitter.com/dog_rates/status/836380477...</td>
+      <td>12</td>
+      <td>10</td>
+      <td>Ava</td>
       <td>pupper</td>
     </tr>
     <tr>
-      <th>837</th>
-      <td>767754930266464257</td>
-      <td>2016-08-22 16:06:54+00:00</td>
+      <th>2230</th>
+      <td>668237644992782336</td>
+      <td>2015-11-22 01:20:44+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Philbert. His toilet broke and he does...</td>
-      <td>https://twitter.com/dog_rates/status/767754930...</td>
-      <td>11</td>
+      <td>This is Torque. He served his nickel. Better n...</td>
+      <td>https://twitter.com/dog_rates/status/668237644...</td>
       <td>10</td>
-      <td>Philbert</td>
+      <td>10</td>
+      <td>Torque</td>
       <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1467</th>
-      <td>694329668942569472</td>
-      <td>2016-02-02 01:21:07+00:00</td>
-      <td>Twitter for iPhone</td>
-      <td>Meet Grady. He's very hungry. Too bad no one c...</td>
-      <td>https://twitter.com/dog_rates/status/694329668...</td>
-      <td>9</td>
-      <td>10</td>
-      <td>Grady</td>
-      <td>pupper</td>
     </tr>
   </tbody>
 </table>
@@ -15316,6 +15860,17 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># copy into a new DataFrame to be cleaned</span>
+<span class="n">df_pred_clean</span> <span class="o">=</span> <span class="n">df_pred</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15329,6 +15884,25 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Renaming the dataset columns</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span> <span class="s1">&#39;jpg_url&#39;</span><span class="p">,</span> <span class="s1">&#39;img_num&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;prediction_1&#39;</span><span class="p">,</span> <span class="s1">&#39;confidence_1&#39;</span><span class="p">,</span> <span class="s1">&#39;breed_1&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;prediction_2&#39;</span><span class="p">,</span> <span class="s1">&#39;confidence_2&#39;</span><span class="p">,</span> <span class="s1">&#39;breed_2&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;prediction_3&#39;</span><span class="p">,</span> <span class="s1">&#39;confidence_3&#39;</span><span class="p">,</span> <span class="s1">&#39;breed_3&#39;</span><span class="p">]</span>
+
+<span class="n">df_pred_clean</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+
+<span class="n">df_pred_clean</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">wide_to_long</span><span class="p">(</span><span class="n">df_pred_clean</span><span class="p">,</span> <span class="n">stubnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="s1">&#39;confidence&#39;</span><span class="p">,</span> <span class="s1">&#39;breed&#39;</span><span class="p">],</span> 
+    <span class="n">i</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span> <span class="s1">&#39;jpg_url&#39;</span><span class="p">,</span> <span class="s1">&#39;img_num&#39;</span><span class="p">],</span> <span class="n">j</span><span class="o">=</span><span class="s1">&#39;prediction_level&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15339,6 +15913,16 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pred_clean</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15346,7 +15930,8 @@ Name: source, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[47]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -15379,53 +15964,53 @@ Name: source, dtype: int64</pre>
   </thead>
   <tbody>
     <tr>
-      <th>4869</th>
-      <td>803638050916102144</td>
-      <td>https://pbs.twimg.com/ext_tw_video_thumb/80363...</td>
+      <th>3958</th>
+      <td>756275833623502848</td>
+      <td>https://pbs.twimg.com/media/Cn7U2xlW8AI9Pqp.jpg</td>
       <td>1</td>
-      <td>1</td>
-      <td>Labrador_retriever</td>
-      <td>0.372776</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5184</th>
-      <td>820690176645140481</td>
-      <td>https://pbs.twimg.com/media/C2OtWr0VQAEnS9r.jpg</td>
       <td>2</td>
-      <td>1</td>
-      <td>West_Highland_white_terrier</td>
-      <td>0.872064</td>
+      <td>Irish_terrier</td>
+      <td>0.086981</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>4920</th>
-      <td>807059379405148160</td>
-      <td>https://pbs.twimg.com/media/Ct2qO5PXEAE6eB0.jpg</td>
+      <th>4963</th>
+      <td>810254108431155201</td>
+      <td>https://pbs.twimg.com/media/Cz6Z0DgWIAAfdvp.jpg</td>
+      <td>1</td>
+      <td>2</td>
+      <td>American_Staffordshire_terrier</td>
+      <td>0.261233</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>888</th>
+      <td>671362598324076544</td>
+      <td>https://pbs.twimg.com/media/CVEouDRXAAEe8mt.jpg</td>
       <td>1</td>
       <td>1</td>
-      <td>seat_belt</td>
-      <td>0.474292</td>
+      <td>tub</td>
+      <td>0.393616</td>
       <td>False</td>
     </tr>
     <tr>
-      <th>5971</th>
-      <td>873213775632977920</td>
-      <td>https://pbs.twimg.com/media/DB5HTBGXUAE0TiK.jpg</td>
-      <td>1</td>
+      <th>1882</th>
+      <td>680836378243002368</td>
+      <td>https://pbs.twimg.com/media/CXLREjOW8AElfk6.jpg</td>
+      <td>3</td>
       <td>2</td>
-      <td>bloodhound</td>
-      <td>0.338069</td>
+      <td>Shetland_sheepdog</td>
+      <td>0.160669</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>2739</th>
-      <td>700864154249383937</td>
-      <td>https://pbs.twimg.com/media/Cbn4OqKWwAADGWt.jpg</td>
+      <th>482</th>
+      <td>668902994700836864</td>
+      <td>https://pbs.twimg.com/media/CUhruUgUAAAa8FQ.jpg</td>
       <td>1</td>
-      <td>1</td>
-      <td>kuvasz</td>
-      <td>0.805857</td>
+      <td>3</td>
+      <td>Blenheim_spaniel</td>
+      <td>0.028004</td>
       <td>True</td>
     </tr>
   </tbody>
@@ -15447,6 +16032,17 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># copy into a new DataFrame to be cleaned</span>
+<span class="n">df_api_clean</span> <span class="o">=</span> <span class="n">df_api</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15460,6 +16056,18 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_api_clean</span><span class="p">[</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15470,6 +16078,16 @@ Name: source, dtype: int64</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_api_clean</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15477,7 +16095,8 @@ Name: source, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[50]:</div>
+
 
 
 
@@ -15512,6 +16131,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_archive_clean</span><span class="p">,</span> <span class="n">df_api_clean</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15522,6 +16151,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_merged</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15529,7 +16168,8 @@ dtype: object</pre>
 
 <div class="output_area">
 
-    <div class="prompt"> </div>
+    <div class="prompt output_prompt">Out[52]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -15566,46 +16206,46 @@ dtype: object</pre>
   </thead>
   <tbody>
     <tr>
-      <th>187</th>
-      <td>847251039262605312</td>
-      <td>2017-03-30 00:56:03+00:00</td>
+      <th>644</th>
+      <td>766423258543644672</td>
+      <td>2016-08-18 23:55:18+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>This is Furzey. He's doing an elevated sandy z...</td>
-      <td>https://twitter.com/dog_rates/status/847251039...</td>
-      <td>12</td>
+      <td>This is Shadoe. Her tongue flies out of her mo...</td>
+      <td>https://twitter.com/dog_rates/status/766423258...</td>
+      <td>9</td>
       <td>10</td>
-      <td>Furzey</td>
+      <td>Shadoe</td>
       <td>NaN</td>
-      <td>4136</td>
-      <td>19849</td>
+      <td>1546</td>
+      <td>5902</td>
     </tr>
     <tr>
-      <th>1222</th>
-      <td>667832474953625600</td>
-      <td>2015-11-20 22:30:44+00:00</td>
+      <th>708</th>
+      <td>680191257256136705</td>
+      <td>2015-12-25 01:00:07+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>THE EYES 12/10\n\nI'm sorry. These are suppose...</td>
-      <td>https://twitter.com/dog_rates/status/667832474...</td>
-      <td>12</td>
+      <td>Here's a sleepy Christmas pupper 11/10 https:/...</td>
+      <td>https://twitter.com/dog_rates/status/680191257...</td>
+      <td>11</td>
       <td>10</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>56</td>
-      <td>273</td>
+      <td>pupper</td>
+      <td>479</td>
+      <td>2080</td>
     </tr>
     <tr>
-      <th>147</th>
-      <td>857393404942143489</td>
-      <td>2017-04-27 00:38:11+00:00</td>
+      <th>868</th>
+      <td>674790488185167872</td>
+      <td>2015-12-10 03:19:24+00:00</td>
       <td>Twitter for iPhone</td>
-      <td>Instead of the usual nightly dog rate, I'm sha...</td>
-      <td>https://www.gofundme.com/meeko-needs-heart-sur...</td>
+      <td>ER... MER... GERD 13/10 https://t.co/L1puJISV1a</td>
+      <td>https://twitter.com/dog_rates/status/674790488...</td>
       <td>13</td>
       <td>10</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>1525</td>
-      <td>5568</td>
+      <td>235</td>
+      <td>1041</td>
     </tr>
   </tbody>
 </table>
@@ -15634,6 +16274,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_merged</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;twitter_archive_master.csv&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15645,6 +16295,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_pred_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;image_predictions_clean.csv&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -15656,6 +16316,16 @@ dtype: object</pre>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     </div>
