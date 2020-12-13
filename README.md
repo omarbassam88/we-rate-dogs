@@ -14,6 +14,7 @@ WeRateDogs has over 4 million followers and has received international media cov
 Working with real world data is not a an easy process. Data needed to be gathered from different sources both manually and programmatically. after the data was cleaned, it was stored locally in separted files to appply the analysis and visualization to them.
 
 ## Project files
+
 - `wrangle_act.ipynb` : The main process of wrangling, analyzing and visualizing the data.
 - `wrangle_report.html` : The final summery of the data wrangling efforts exported from `wrangle_report.ipynb`.
 - `act_report.html` : The final data analysis and visualization exported form `wrangle_act.ipynb`.
